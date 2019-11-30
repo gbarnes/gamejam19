@@ -6,6 +6,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "CorporateSlaveCharacter.h"
 #include "Engine/World.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ACorporateSlavePlayerController::ACorporateSlavePlayerController()
 {
@@ -18,10 +19,21 @@ void ACorporateSlavePlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	// keep updating the destination every tick while desired
-	if (bMoveToMouseCursor)
+	/*if (bMoveToMouseCursor)
 	{
 		MoveToMouseCursor();
-	}
+	}*/
+	auto Pawn = GetPawn();
+	float Forward = GetInputAxisValue("MoveForward");
+	float Right = GetInputAxisValue("MoveRight");
+	auto CameraRotator = PlayerCameraManager->GetCameraRotation();
+
+	Pawn->AddMovementInput(UKismetMathLibrary::GetForwardVector(CameraRotator), Forward);
+	Pawn->AddMovementInput(UKismetMathLibrary::GetRightVector(CameraRotator), Right);
+
+
+	
+
 }
 
 void ACorporateSlavePlayerController::SetupInputComponent()
@@ -37,6 +49,9 @@ void ACorporateSlavePlayerController::SetupInputComponent()
 	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &ACorporateSlavePlayerController::MoveToTouchLocation);
 
 	InputComponent->BindAction("ResetVR", IE_Pressed, this, &ACorporateSlavePlayerController::OnResetVR);
+	
+	InputComponent->BindAxis("MoveForward", this, &ACorporateSlavePlayerController::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &ACorporateSlavePlayerController::MoveRight);
 }
 
 void ACorporateSlavePlayerController::OnResetVR()
@@ -109,4 +124,14 @@ void ACorporateSlavePlayerController::OnSetDestinationReleased()
 {
 	// clear flag to indicate we should stop updating the destination
 	bMoveToMouseCursor = false;
+}
+
+void ACorporateSlavePlayerController::MoveForward(float AxisValue)
+{
+	
+}
+
+void ACorporateSlavePlayerController::MoveRight(float AxisValue)
+{
+	
 }
