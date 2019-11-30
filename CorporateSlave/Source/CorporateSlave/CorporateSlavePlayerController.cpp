@@ -11,7 +11,7 @@
 ACorporateSlavePlayerController::ACorporateSlavePlayerController()
 {
 	bShowMouseCursor = true;
-	DefaultMouseCursor = EMouseCursor::Crosshairs;
+	DefaultMouseCursor = EMouseCursor::Default;
 }
 
 void ACorporateSlavePlayerController::PlayerTick(float DeltaTime)
