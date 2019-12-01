@@ -24,16 +24,15 @@ void ACorporateSlavePlayerController::PlayerTick(float DeltaTime)
 		MoveToMouseCursor();
 	}*/
 	auto Pawn = GetPawn();
-	float Forward = GetInputAxisValue("MoveForward");
-	float Right = GetInputAxisValue("MoveRight");
-	auto CameraRotator = PlayerCameraManager->GetCameraRotation();
+	if (Pawn && HasAuthority())
+	{
+		float Forward = GetInputAxisValue("MoveForward");
+		float Right = GetInputAxisValue("MoveRight");
+		auto CameraRotator = PlayerCameraManager->GetCameraRotation();
 
-	Pawn->AddMovementInput(UKismetMathLibrary::GetForwardVector(CameraRotator), Forward);
-	Pawn->AddMovementInput(UKismetMathLibrary::GetRightVector(CameraRotator), Right);
-
-
-	
-
+		Pawn->AddMovementInput(UKismetMathLibrary::GetForwardVector(CameraRotator), Forward);
+		Pawn->AddMovementInput(UKismetMathLibrary::GetRightVector(CameraRotator), Right);
+	}
 }
 
 void ACorporateSlavePlayerController::SetupInputComponent()
